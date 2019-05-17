@@ -38,7 +38,7 @@ app.layout = html.Div([
 ######### Interactive callbacks go here #########
 @app.callback(dash.dependencies.Output('display-value', 'figure'),
               [dash.dependencies.Input('dropdown', 'value')])
-def display_value('contribution_receipt_amount'):
+def display_value(user_input):
     results = ind_bernie.groupby('contributor_state')['contribution_receipt_amount'].sum().sort_values(ascending = False).head(10)
     mydata = [go.Bar(x = results.index,
                      y = results.values,
