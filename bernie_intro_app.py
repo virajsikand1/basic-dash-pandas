@@ -15,16 +15,16 @@ app.title='Titanic!'
 app.css.append_css({"external_url": "https://codepen.io/chriddyp/pen/bWLwgP.css"})
 
 ###### Import a dataframe #######
-df = pd.read_csv("https://raw.githubusercontent.com/austinlasseter/plotly_dash_tutorial/master/00%20resources/titanic.csv")
-
-colors_list=['Age' , 'Fare', 'Survived', 'Pclass']
+bernie = pd.read_csv('https://raw.githubusercontent.com/virajsikand1/Data_uploads/master/bernie_condensed.csv')
+ind_bernie = bernie [bernie['is_individual'] == 't']
+colors_list=['Bernie' , 'Warren', 'Survived', 'Pclass']
 
 
 
 
 ####### Layout of the app ########
 app.layout = html.Div([
-    html.H3('Choose a color from the list:'),
+    html.H3('Choose a candidate from the list:'),
     dcc.Dropdown(
         id='dropdown',
         options=[{'label': i, 'value': i} for i in colors_list],
@@ -38,8 +38,8 @@ app.layout = html.Div([
 ######### Interactive callbacks go here #########
 @app.callback(dash.dependencies.Output('display-value', 'figure'),
               [dash.dependencies.Input('dropdown', 'value')])
-def display_value(user_input):
-    results = df.groupby('Sex')[user_input].mean()
+def display_value('contribution_receipt_amount'):
+    results = ind_bernie.groupby('contributor_state')['contribution_receipt_amount'].sum().sort_values(ascending = False).head(10)
     mydata = [go.Bar(x = results.index,
                      y = results.values,
                      marker = dict(color='blue'))]
