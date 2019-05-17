@@ -17,7 +17,7 @@ app.css.append_css({"external_url": "https://codepen.io/chriddyp/pen/bWLwgP.css"
 ###### Import a dataframe #######
 bernie = pd.read_csv('https://raw.githubusercontent.com/virajsikand1/Data_uploads/master/bernie_condensed.csv')
 ind_bernie = bernie [bernie['is_individual'] == 't']
-colors_list=['Bernie' , 'Warren', 'Survived', 'Pclass']
+colors_list=['contributor_state', 'contributor_city']
 
 
 
@@ -39,7 +39,7 @@ app.layout = html.Div([
 @app.callback(dash.dependencies.Output('display-value', 'figure'),
               [dash.dependencies.Input('dropdown', 'value')])
 def display_value(user_input):
-    results = ind_bernie.groupby('contributor_state')['contribution_receipt_amount'].sum().sort_values(ascending = False).head(10)
+    results = ind_bernie.groupby(user_input)['contribution_receipt_amount'].sum().sort_values(ascending = False).head(10)
     mydata = [go.Bar(x = results.index,
                      y = results.values,
                      marker = dict(color='blue'))]
