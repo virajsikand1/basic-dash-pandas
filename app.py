@@ -15,7 +15,7 @@ app.title='Number of Individual Contributors to Presidential Campaigns'
 app.css.append_css({"external_url": "https://codepen.io/chriddyp/pen/bWLwgP.css"})
 
 ###### Import a dataframe #######
-
+df = pd.read_csv('https://raw.githubusercontent.com/virajsikand1/Data_uploads/master/all_candidates_dataset.csv')
 colors_list= ['Bernie', 'Warren', 'Kamala', 'Beto', 'Trump']
 
 
