@@ -30,7 +30,8 @@ app.layout = html.Div([
         value=colors_list[0]
     ),
     html.Br(),
-    dcc.Graph(id='display-value')
+    dcc.Graph(id='display-value'),
+    dcc.Graph(id='display-value2')
 ])
 
 
@@ -55,6 +56,30 @@ def display_value(user_input):
     )
     fig = go.Figure(data=mydata, layout=mylayout)
     return fig
+
+
+######### Interactive callbacks go here #########
+@app.callback(dash.dependencies.Output('display-value2', 'figure'),
+              [dash.dependencies.Input('dropdown', 'value')])
+def display_value(user_input):
+    new_df = df[df['candidate_name']==user_input]
+    grouped_df = new_df.groupby(['candidate_name', 'contributor_state'])['contributor_name'].count()
+    top_5= grouped_df.sort_values(ascending=False).head()
+    top_5=pd.DataFrame(top_5)
+    top_5=top_5.reset_index()
+    mydata = [go.Bar(
+        x=top_5['contributor_state'],
+        y=top_5['contributor_name']
+    )]
+
+    mylayout = go.Layout(
+        title='top 5 states with the most individual contributors to {} campaign'.format(user_input),
+        xaxis= dict(title='Top 5 States'),
+        yaxis= dict(title='Contributor count')
+    )
+    fig = go.Figure(data=mydata, layout=mylayout)
+    return fig
+
 
 ######### Run the app #########
 if __name__ == '__main__':
