@@ -58,7 +58,7 @@ def display_value(user_input):
     return fig
 
 
-######### Interactive callbacks go here #########
+######### Second callback #########
 @app.callback(dash.dependencies.Output('display-value2', 'figure'),
               [dash.dependencies.Input('dropdown', 'value')])
 def display_value(user_input):
@@ -70,6 +70,7 @@ def display_value(user_input):
     mydata = [go.Bar(
         x=top_5['contributor_state'],
         y=top_5['contributor_name']
+        marker=dict(color='red')
     )]
 
     mylayout = go.Layout(
