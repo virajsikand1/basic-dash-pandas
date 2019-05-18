@@ -19,7 +19,8 @@ df = pd.read_csv('https://raw.githubusercontent.com/virajsikand1/Data_uploads/ma
 colors_list= ['Bernie', 'Warren', 'Kamala', 'Beto', 'Trump']
 
 
-
+###### Static graph #######
+#mysupercoolfigthatidefinedearlier=go.Figure(data, layout)
 
 ####### Layout of the app ########
 app.layout = html.Div([
@@ -31,7 +32,8 @@ app.layout = html.Div([
     ),
     html.Br(),
     dcc.Graph(id='display-value'),
-    dcc.Graph(id='display-value2')
+    dcc.Graph(id='display-value2'),
+   # dcc.Graph(id='display-value3', figure='mysupercoolfigthatidefinedearlier')
 ])
 
 
