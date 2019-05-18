@@ -11,13 +11,12 @@ from plotly.graph_objs import *
 ####### Set up your app #####
 app = dash.Dash(__name__)
 server = app.server
-app.title='Titanic!'
+app.title='Presidential Candidates, Individual Contributors'
 app.css.append_css({"external_url": "https://codepen.io/chriddyp/pen/bWLwgP.css"})
 
 ###### Import a dataframe #######
-bernie = pd.read_csv('https://raw.githubusercontent.com/virajsikand1/Data_uploads/master/bernie_condensed.csv')
-ind_bernie = bernie [bernie['is_individual'] == 't']
-colors_list=['contributor_state', 'contributor_city']
+df = pd.read_csv('https://raw.githubusercontent.com/virajsikand1/Data_uploads/master/all_candidates_dataset.csv')
+colors_list= ['Bernie', 'Warren', 'Kamala', 'Beto', 'Trump']
 
 
 
@@ -39,16 +38,23 @@ app.layout = html.Div([
 @app.callback(dash.dependencies.Output('display-value', 'figure'),
               [dash.dependencies.Input('dropdown', 'value')])
 def display_value(user_input):
-    results = ind_bernie.groupby(user_input)['contribution_receipt_amount'].sum().sort_values(ascending = False).head(10)
-    mydata = [go.Bar(x = results.index,
-                     y = results.values,
-                     marker = dict(color='blue'))]
-    mylayout = go.Layout(title = 'This is a cool bar chart',
-                         xaxis = dict(title='this is my x-axis'),
-                         yaxis = dict(title='this is my y-axis'))
-    myfig = go.Figure(data=mydata, layout=mylayout)
-    return myfig
+    new_df = df[df['candidate_name'] == '{}'.format(user_input)]
+    grouped_df = new_df.groupby(['candidate_name', 'contributor_state'])['contributor_name'].count()
+    top_5= grouped_df.sort_values(ascending=False).head()
+    top_5=pd.DataFrame(top_5)
+    top_5=top_5.reset_index()
+    mydata = [go.Bar(
+        x=mytop5['contributor_state'],
+        y=mytop5['contributor_name']
+    )]
 
+    mylayout = go.Layout(
+        title='top 5 states with the most individual contributors to {} campaign'.format(user_input),
+        xaxis= dict(title='Top 5 States'),
+        yaxis= dict(title='Contributor count')
+    )
+    fig = go.Figure(data=mydata, layout=mylayout)
+    return fig
 
 ######### Run the app #########
 if __name__ == '__main__':
