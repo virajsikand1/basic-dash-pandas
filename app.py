@@ -15,7 +15,7 @@ app.title='Number of Individual Contributors to Presidential Campaigns'
 app.css.append_css({"external_url": "https://codepen.io/chriddyp/pen/bWLwgP.css"})
 
 ###### Import a dataframe #######
-df = pd.read_csv('https://raw.githubusercontent.com/virajsikand1/Data_uploads/master/all_candidates_dataset.csv')
+
 colors_list= ['Bernie', 'Warren', 'Kamala', 'Beto', 'Trump']
 
 
@@ -38,14 +38,14 @@ app.layout = html.Div([
 @app.callback(dash.dependencies.Output('display-value', 'figure'),
               [dash.dependencies.Input('dropdown', 'value')])
 def display_value(user_input):
-    new_df = df[df['candidate_name'] == '{}'.format(user_input)]
+    new_df = df[df['candidate_name']==user_input]
     grouped_df = new_df.groupby(['candidate_name', 'contributor_state'])['contributor_name'].count()
     top_5= grouped_df.sort_values(ascending=False).head()
     top_5=pd.DataFrame(top_5)
     top_5=top_5.reset_index()
     mydata = [go.Bar(
-        x=mytop5['contributor_state'],
-        y=mytop5['contributor_name']
+        x=top_5['contributor_state'],
+        y=top_5['contributor_name']
     )]
 
     mylayout = go.Layout(
